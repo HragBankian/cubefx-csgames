@@ -1,0 +1,37 @@
+mod cube;
+
+use crate::cube::{irfft, phase_shift, rfft};
+use cubecl::{Runtime, ir::StorageType, std::tensor::TensorHandle};
+
+pub struct SignalSpec {
+    pub signal_duration: f32,
+    pub channels: usize,
+    pub sample_rate: usize,
+    pub window_length: usize,
+    pub hop_length: usize,
+}
+
+impl SignalSpec {
+    pub fn signal_shape(&self) -> [usize; 3] {
+        let total_samples = (self.signal_duration * self.sample_rate as f32).ceil() as usize;
+        let num_windows = total_samples.div_ceil(self.hop_length);
+        [num_windows, self.channels, self.window_length]
+    }
+
+    pub fn spectrum_shape(&self) -> [usize; 3] {
+        let total_samples = (self.signal_duration * self.sample_rate as f32).ceil() as usize;
+        let num_windows = total_samples.div_ceil(self.hop_length);
+        let num_frequency_bins = self.window_length / 2 + 1;
+        [num_windows, self.channels, num_frequency_bins]
+    }
+}
+
+pub fn phase_shift_effect<R: Runtime>(
+    signal: TensorHandle<R>,
+    alpha: f32,
+    dtype: StorageType,
+) -> TensorHandle<R> {
+    let (spectrum_re, spectrum_im) = rfft(signal, dtype);
+    let (shifted_re, shifted_im) = phase_shift(spectrum_re, spectrum_im, alpha);
+    irfft(shifted_re, shifted_im, dtype)
+}

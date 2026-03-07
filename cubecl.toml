@@ -1,0 +1,2 @@
+[profiling]
+logger = { level = "basic", stdout = true }

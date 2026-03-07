@@ -1,0 +1,10 @@
+[package]
+name = "cubefx-eval"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+cubefx-engine = { path = "../cubefx-engine" }
+cubek-test-utils = { workspace = true }
+cubecl = { workspace = true }
+cubecl-common = { workspace = true }

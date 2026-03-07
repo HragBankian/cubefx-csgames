@@ -1,0 +1,12 @@
+[package]
+name = "cubefx-engine"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+cubecl = { workspace = true }
+cubecl-common = { workspace = true }
+
+[dev-dependencies]
+num-complex = { version = "*" }
+cubek-test-utils = { workspace = true }
