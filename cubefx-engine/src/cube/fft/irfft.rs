@@ -142,12 +142,13 @@ pub(crate) fn irfft_kernel_one_batch<F: Float>(
     for i in 0..num_samples {
         spectrum_re[i] = spectrum_re[i] / F::cast_from(num_samples);
         spectrum_im[i] = spectrum_im[i] / F::cast_from(num_samples);
+        signal_view.write(i, Line::cast_from(spectrum_re[i]));
     }
 
     // Write full real output
-    for i in 0..num_samples {
-        // Warning: this assumes that output_view have lines of 1 element
-        // If lines had more elements, the ith element would be duplicated as it is
-        signal_view.write(i, Line::cast_from(spectrum_re[i]));
-    }
+    // for i in 0..num_samples {
+    //     // Warning: this assumes that output_view have lines of 1 element
+    //     // If lines had more elements, the ith element would be duplicated as it is
+    //     signal_view.write(i, Line::cast_from(spectrum_re[i]));
+    // }
 }
