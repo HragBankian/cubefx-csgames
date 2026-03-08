@@ -95,8 +95,7 @@ fn fft_butterfly_stages<F: Float>(
             let mut w_re = F::new(1.0);
             let mut w_im = F::new(0.0);
 
-            let mut j = 0;
-            while j < half_m {
+            for j in 0..half_m {
                 let i0 = k + j;
                 let i1 = i0 + half_m;
 
@@ -116,7 +115,7 @@ fn fft_butterfly_stages<F: Float>(
                 w_re = new_w.0;
                 w_im = new_w.1;
 
-                j += 1;
+                // j += 1;
             }
 
             k += m;
